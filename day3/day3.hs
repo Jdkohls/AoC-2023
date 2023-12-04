@@ -112,9 +112,9 @@ findTrue f cond li = findTrue' f cond li 0
 
 
 
---parse' :: [Char] -> [Int]
+parse' :: [Char] -> [Int]
 parse' [] = []
-parse' xs =  fltr (sortBy (\[a,_] [b,_] -> compare a b) (findStar (findNearbyStars xs) (getStars xs)))  --`debug` (show (findStar (findNearbyStars xs) (getStars xs)) ++ "\n" ++ show (findNearbyStars xs)  ++ "\n") -- goto next num
+parse' xs =  fltr (sortBy (\[a,_] [b,_] -> compare a b) (findStar (findNearbyStars xs) (getStars xs))) 
     where
         findStar :: [[Int]] -> [[Int]] -> [[Int]]
         findStar _ [] = []
