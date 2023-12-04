@@ -24,12 +24,13 @@ countWins [winning, pulls] = length (filter id (fn winning pulls))
         fn _ [] = []
 countWins xs = 0 `debug` show xs
 
-parse :: [Char] -> Int
-parse = flip div 2 . (2 ^) . countWins . numsParse -- if 0 wins, 1 `div` 2 == 0; else reduces to 2^{n-1}
--- parse xs = div (2 ^ (countWins . numsParse  $ xs)) 2 
 
 ticketsWon :: [Char] -> Int
 ticketsWon = countWins . numsParse
+
+parse :: [Char] -> Int
+parse = flip div 2 . (2 ^) . ticketsWon -- if 0 wins, 1 `div` 2 == 0; else reduces to 2^{n-1}
+-- parse xs = div (2 ^ (countWins . numsParse  $ xs)) 2 
 
 winlist :: [[Char]] -> [Int]
 winlist = map ticketsWon
