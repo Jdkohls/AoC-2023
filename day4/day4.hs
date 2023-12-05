@@ -12,8 +12,7 @@ debug = flip trace
 
 --numsParse :: [char] -> Int
 numsParse :: [Char] -> [[[Char]]]
-numsParse [] = []
-numsParse xs = map (filter (not . null) . splitOn " ") (tail (splitOneOf ":|" xs))
+numsParse = map (filter (not . null) . splitOn " ") . tail . splitOneOf ":|"
 
 countWins :: [[[Char]]] -> Int
 countWins [] = 0
@@ -30,23 +29,23 @@ ticketsWon = countWins . numsParse
 
 parse :: [Char] -> Int
 parse = flip div 2 . (2 ^) . ticketsWon -- if 0 wins, 1 `div` 2 == 0; else reduces to 2^{n-1}
--- parse xs = div (2 ^ (countWins . numsParse  $ xs)) 2 
+-- parse xs = div (2 ^ ticketsWon xs) 2 
 
 winlist :: [[Char]] -> [Int]
 winlist = map ticketsWon
 
 
 partTwo :: [[Char]] -> Int
-partTwo =  sum . cleanup  . solve . zip  . winlist
+partTwo =  sum . cleanup  . solve . tup  . winlist
     where
-        zip :: [Int] -> [(Int,Int)]
-        zip (x:xs) = (1,x):zip xs
-        zip [] = []
+        tup :: [Int] -> [(Int,Int)]
+        tup (x:xs) = (1,x):tup xs
+        tup [] = []
 
         solve :: [(Int, Int)] -> [(Int, Int)]
         solve ((x,y):xs) = (x,y): solve (update x y xs)
         solve [] = []
-
+            
         update :: Int -> Int -> [(Int, Int)] -> [(Int, Int)]
         update i 0 xs = xs
         update i j ((x,y):xs) = (x + i, y) : update i (j-1) xs
